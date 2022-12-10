@@ -24,7 +24,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> criar(@RequestBody Categoria categoria, HttpServletResponse response) {
+    public ResponseEntity<Categoria> criar( @RequestBody Categoria categoria, HttpServletResponse response) {
         var categoriaSalva = categoriaRepository.save(categoria);
 
         var uri = ServletUriComponentsBuilder
