@@ -25,7 +25,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var userMessage = messageSource.getMessage("mensagem.invalida",null, LocaleContextHolder.getLocale());
         var developerMessage = ex.getCause().getMessage();
-        var
 
         return super.handleExceptionInternal(ex, new ErrorMessageAgregator(developerMessage, userMessage), headers, HttpStatus.BAD_REQUEST, request);
     }
