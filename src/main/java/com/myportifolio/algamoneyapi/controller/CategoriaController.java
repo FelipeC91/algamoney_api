@@ -3,6 +3,7 @@ package com.myportifolio.algamoneyapi.controller;
 import com.myportifolio.algamoneyapi.model.Categoria;
 import com.myportifolio.algamoneyapi.repository.CategoriaRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> criar( @RequestBody Categoria categoria, HttpServletResponse response) {
+    public ResponseEntity<Categoria> criar(@RequestBody @Valid Categoria categoria, HttpServletResponse response) {
         var categoriaSalva = categoriaRepository.save(categoria);
 
         var uri = ServletUriComponentsBuilder
