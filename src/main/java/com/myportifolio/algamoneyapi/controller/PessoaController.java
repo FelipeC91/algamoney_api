@@ -1,0 +1,38 @@
+package com.myportifolio.algamoneyapi.controller;
+
+import com.myportifolio.algamoneyapi.evento.RecursoCriadoEvent;
+import com.myportifolio.algamoneyapi.model.Pessoa;
+import com.myportifolio.algamoneyapi.repository.PessoaRepository;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/pessoa")
+public class PessoaController {
+
+    @Autowired
+    private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    @GetMapping
+    public List<Pessoa> listarPessoas() {
+        return pessoaRepository.findAll();
+    }
+    @PostMapping("")
+    public ResponseEntity<Pessoa> criarPessoa(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
+        var pessoaSalva = pessoaRepository.save(pessoa);
+
+        eventPublisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo()));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
+    }
+}

@@ -1,13 +1,15 @@
 package com.myportifolio.algamoneyapi.controller;
 
+import com.myportifolio.algamoneyapi.evento.RecursoCriadoEvent;
 import com.myportifolio.algamoneyapi.model.Categoria;
 import com.myportifolio.algamoneyapi.repository.CategoriaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ public class CategoriaController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     @GetMapping
     public List<Categoria> listar() {
         return categoriaRepository.findAll();
@@ -28,11 +33,9 @@ public class CategoriaController {
     public ResponseEntity<Categoria> criar(@RequestBody @Valid Categoria categoria, HttpServletResponse response) {
         var categoriaSalva = categoriaRepository.save(categoria);
 
-        var uri = ServletUriComponentsBuilder
-                        .fromCurrentRequestUri().path("/{codigo}")
-                        .buildAndExpand( categoriaSalva.getCodigo() ).toUri();
+        eventPublisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
 
-        return ResponseEntity.created(uri).body(categoriaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
 
     }
     @GetMapping("/{codigo}")

@@ -1,26 +1,28 @@
 package com.myportifolio.algamoneyapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
+@Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
-public class Categoria {
+public class Pessoa {
 
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
-    @Size(max = 50)
-    @NotBlank(message = "Nome da categoria deve ser preenchido")
+    @NotBlank
     private String nome;
+
+    @NotNull
+    private Boolean ativo;
+
+    @Embedded
+    private Endereco endereco;
+
 }
