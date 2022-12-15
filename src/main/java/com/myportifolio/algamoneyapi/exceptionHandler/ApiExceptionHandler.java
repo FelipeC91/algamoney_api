@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,6 +13,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -54,8 +57,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(fieldError -> {
                     var devMsg = fieldError.toString();
                     var usrMsg = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                   return new ErrorMessageAgregator(devMsg,usrMsg);
+                    return new ErrorMessageAgregator(devMsg,usrMsg);
                 })
                 .forEach(this.errorMessageAgregatorList::add);
+    }
+
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({EmptyResultDataAccessException.class})
+    public ResponseEntity<Object> handleEmptyResultDataAcessException(EmptyResultDataAccessException ex, WebRequest request) {
+        var devMsg = ex.toString();
+        var usrMsg = messageSource.getMessage("recurso-nao-encontrado", null, LocaleContextHolder.getLocale());
+        var errorMssgAgregator = new ErrorMessageAgregator(devMsg,usrMsg);
+        return handleExceptionInternal(ex,errorMssgAgregator,new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+
     }
 }

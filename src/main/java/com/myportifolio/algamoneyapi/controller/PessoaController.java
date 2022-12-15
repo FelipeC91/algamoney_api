@@ -35,4 +35,11 @@ public class PessoaController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
     }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePessoa(@PathVariable("codigo") Long pessoaCodigo, HttpServletResponse response) {
+        pessoaRepository.deleteById(pessoaCodigo);
+
+    }
 }
