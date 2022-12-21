@@ -56,7 +56,7 @@ public class PessoaController {
 
     @PutMapping("/{codigo}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ? updateAtivoPropertie(@PathVariable("codigo") Long pessoaCodigo, @RequestBody Boolean ativo) {
+    public void updateAtivoPropertie(@PathVariable("codigo") Long pessoaCodigo, @RequestBody Boolean ativo) {
         pessoaService.proertieAtivoUpdate(pessoaCodigo, ativo);
     }
 }
