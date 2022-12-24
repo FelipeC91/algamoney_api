@@ -1,5 +1,6 @@
 package com.myportifolio.algamoneyapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,5 +25,11 @@ public class Pessoa {
 
     @Embedded
     private Endereco endereco;
+
+    @JsonIgnore
+    @Transient
+    public Boolean isInativo() {
+        return !this.ativo;
+    }
 
 }

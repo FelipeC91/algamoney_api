@@ -4,6 +4,8 @@ package com.myportifolio.algamoneyapi.controller;
 import com.myportifolio.algamoneyapi.evento.RecursoCriadoEvent;
 import com.myportifolio.algamoneyapi.model.Lancamento;
 import com.myportifolio.algamoneyapi.repository.LancamentoRepository;
+import com.myportifolio.algamoneyapi.repository.filter.LancamentoFilterRecord;
+import com.myportifolio.algamoneyapi.service.LancamentoService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -23,11 +24,14 @@ public class LancamentoController {
     private LancamentoRepository lancamentoRepository;
 
     @Autowired
+    private LancamentoService lancamentoService;
+
+    @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @GetMapping
-    public List<Lancamento> listar() {
-        return lancamentoRepository.findAll();
+    public List<Lancamento> listar(LancamentoFilterRecord lancamentoFilter) {
+        return lancamentoRepository.filter(lancamentoFilter);
     }
 
     @GetMapping("/{codigo}")
@@ -43,11 +47,14 @@ public class LancamentoController {
 
     @PostMapping
     public ResponseEntity<Lancamento> criarLancamento(@RequestBody @Valid  Lancamento lancamento, HttpServletResponse response) {
-        var lancamentoOptional = lancamentoRepository.save(lancamento);
+        var lancamentoOptional = lancamentoService.save(lancamento);
 
         eventPublisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoOptional.getCodigo() ));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoOptional);
 
     }
+
+
+
 }
