@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,8 @@ public class LancamentoController {
     private ApplicationEventPublisher eventPublisher;
 
     @GetMapping
-    public List<Lancamento> listar(LancamentoFilterRecord lancamentoFilter) {
-        return lancamentoRepository.filter(lancamentoFilter);
+    public Page<Lancamento> listAll(LancamentoFilterRecord lancamentoFilter, Pageable pageable) {
+        return lancamentoRepository.filter(lancamentoFilter, pageable);
     }
 
     @GetMapping("/{codigo}")
@@ -53,6 +55,12 @@ public class LancamentoController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoOptional);
 
+    }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLancamento(@PathVariable Long codigo) {
+        lancamentoRepository.deleteById(codigo);
     }
 
 
