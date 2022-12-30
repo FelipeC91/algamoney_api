@@ -2,25 +2,22 @@ package com.myportifolio.algamoneyapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig {
-
+public class ResourceServerSecurityConfig {
 
     @Bean
     protected InMemoryUserDetailsManager userDetailsService() {
         var encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        UserDetails user = User.withUsername("admin")
+        var user = User.withUsername("admin")
                 .password(encoder.encode("admin"))
                 .roles("ROLE")
                 .build();
@@ -29,7 +26,9 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(AuthenticationManagerBuilder authenticationManagerBuilder,HttpSecurity http) throws Exception {
-        http.httpBasic()
+        http.formLogin()
+                .and()
+                 .authorizeHttpRequests()
                     .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
