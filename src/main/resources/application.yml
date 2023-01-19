@@ -1,0 +1,21 @@
+# JPA CONFIG
+spring:
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/algamoney_api?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: felipe
+    password: nkqbxyg3
+---
+# SPRING JACKSON CONFIG
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+---
+  # SPRING CONFIGURATION
+spring:
+  mvc:
+    format:
+      date: yyyy-MM-dd
+
