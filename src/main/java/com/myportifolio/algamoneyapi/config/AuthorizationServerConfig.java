@@ -117,54 +117,6 @@ public class AuthorizationServerConfig  {
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
     }
-    //  @Bean
-//    @Order(Ordered.HIGHEST_PRECEDENCE)
-//    public SecurityFilterChain defaultFilterChain(HttpSecurity http) throws Exception {
-//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-//        return http.formLogin().and().build();
-//    }
 
-    //    @Bean
-//    public RegisteredClientRepository registeredClientRepository(PasswordEncoder encoder) throws Exception {
-//        var angularClient = RegisteredClient.withId(UUID.randomUUID().toString())
-//                .clientId("angular")
-//                .clientSecret(encoder.encode("Angul@r0"))
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-//                .scope("users:read")
-//                .scope("users:write")
-//                .tokenSettings(
-//                        TokenSettings.builder()
-//                                .accessTokenTimeToLive(Duration.ofMinutes(30))
-//                                .build()
-//                ).clientSettings(
-//                        ClientSettings.builder()
-//                                .requireAuthorizationConsent(false)
-//                                .build()
-//                ).build();
-//
-//        return new InMemoryRegisteredClientRepository(List.of(angularClient));
-//    }
-//    @Bean
-//    public ProviderSettings providerSettings() {
-//        return ProviderSettings.builder()
-//
-//                .build();
-//    }
-//    public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
-//        return new  NimbusJwtEncoder(jwkSource);
-//    }
-
-
-//    @Override
-//    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-//        endpoints.tokenStore(tokenStore())
-//                .authenticationManager(authenticationManager);
-//    }
-//
-//    @Bean
-//    public TokenStore tokenStore() {
-//        return new  InMemoryTokenStore();
-//    }
 }
 
