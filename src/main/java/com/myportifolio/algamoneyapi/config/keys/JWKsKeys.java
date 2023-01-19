@@ -1,6 +1,7 @@
 package com.myportifolio.algamoneyapi.config.keys;
 
 import com.nimbusds.jose.jwk.RSAKey;
+import org.springframework.stereotype.Component;
 
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
