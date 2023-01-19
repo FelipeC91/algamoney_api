@@ -61,16 +61,11 @@ public class AuthorizationServerConfig  {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/categoria").permitAll()
-                .anyRequest().authenticated()
-             )
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
+                        .anyRequest().authenticated()
+                )
+                // Form login handles the redirect to the login page from the
+                // authorization server filter chain
                 .formLogin(Customizer.withDefaults());
-        // Form login handles the redirect to the login page from the
-        // authorization server filter chain
 
         return http.build();
     }
