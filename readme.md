@@ -14,7 +14,6 @@ Backend de app de gestão de despesas
 
 * **Flyway** - migração de dados
 
-* **Thymeleaf** - template engine
 
 ## Desafios 
 
